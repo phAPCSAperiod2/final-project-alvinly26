@@ -2,14 +2,19 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * Sprint 1: the 10x10 board.
- * Owns the 2D char array, supports ship placement, and can print itself.
- * No shot handling yet — that's Sprint 2.
+ * Represents a 10x10 Battleship board.
+ * Uses a 2D char array to track cell states:
+ * '~' = water (empty)
+ * 'S' = ship
+ * 'X' = hit (NEW in Sprint 2)
+ * 'O' = miss (NEW in Sprint 2)
  */
 public class Board {
     public static final int SIZE = 10;
     public static final char WATER = '~';
     public static final char SHIP = 'S';
+    public static final char HIT = 'X'; // NEW
+    public static final char MISS = 'O'; // NEW
 
     private char[][] grid;
     private ArrayList<Ship> fleet;
@@ -61,6 +66,23 @@ public class Board {
         }
     }
 
+    /** NEW: process an incoming shot. Returns "hit", "miss", or "repeat". */
+    public String receiveShot(int row, int col) {
+        char cell = grid[row][col];
+        if (cell == HIT || cell == MISS)
+            return "repeat";
+        if (cell == SHIP) {
+            grid[row][col] = HIT;
+            for (Ship s : fleet) {
+                if (s.registerHit(row, col))
+                    break;
+            }
+            return "hit";
+        }
+        grid[row][col] = MISS;
+        return "miss";
+    }
+
     public String render() {
         StringBuilder sb = new StringBuilder();
         sb.append("   ");
@@ -84,4 +106,8 @@ public class Board {
     public ArrayList<Ship> getFleet() {
         return fleet;
     }
+
+    public char getCell(int r, int c) {
+        return grid[r][c];
+    } // NEW
 }
