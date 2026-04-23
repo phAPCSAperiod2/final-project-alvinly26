@@ -1,24 +1,27 @@
-import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
- * Sprint 1 driver: build a board, place the standard fleet, print it.
- * Proves the foundation works before adding gameplay.
+ * Sprint 2 driver: create a Player with a fleet, let the user fire
+ * a few shots at it and see hit/miss feedback. No win loop yet.
  */
 public class BattleshipDriver {
     public static void main(String[] args) {
-        Board board = new Board();
+        Player target = new Player("Target");
+        target.getBoard().placeFleetRandomly(target.buildFleet());
 
-        ArrayList<Ship> fleet = new ArrayList<>();
-        fleet.add(new Ship("Carrier", 5));
-        fleet.add(new Ship("Battleship", 4));
-        fleet.add(new Ship("Cruiser", 3));
-        fleet.add(new Ship("Submarine", 3));
-        fleet.add(new Ship("Destroyer", 2));
+        Scanner scanner = new Scanner(System.in);
+        Player shooter = new Player("You");
 
-        board.placeFleetRandomly(fleet);
+        System.out.println("Sprint 2 — Players and Shooting");
+        System.out.println("Fire 5 shots at the target board.\n");
 
-        System.out.println("Sprint 1 — Foundation");
-        System.out.println("Fleet placed on board:");
-        System.out.println(board.render());
+        for (int i = 0; i < 5; i++) {
+            System.out.println(target.getBoard().render());
+            int[] shot = shooter.takeTurn(scanner, target.getBoard());
+            String result = target.getBoard().receiveShot(shot[0], shot[1]);
+            System.out.println("-> " + result.toUpperCase() + "\n");
+        }
+        System.out.println("Final board:");
+        System.out.println(target.getBoard().render());
     }
 }
