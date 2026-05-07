@@ -1,189 +1,90 @@
-[![Open in Codespaces](https://classroom.github.com/assets/launch-codespace-2972f46106e565e64193e422d61a12cf1da4916b45550586e14ef0a7c637dd04.svg)](https://classroom.github.com/open-in-codespaces?assignment_repo_id=23509344)
-# AP Computer Science A – Final Project
-## Software & Systems Development Capstone
+# Battleship
 
-Welcome to your **Final Project repository**.
-
-This repository will hold:
-- Your complete Java project
-- Your project journal and planning artifacts
-- Your final, working software product
-
-This is not just an assignment — it is a **capstone software project**.
+## Project Title
+Battleship — Java Console Game
 
 ---
 
-## 📌 Project Overview (Read Carefully)
-
-In this project, you will:
-- Design and build a **real piece of software**
-- Solve **one real problem** for **one clearly defined user**
-- Work using **agile development**
-- Show evidence of **professional software practices**
-- Use AI responsibly as a planning and support tool
-
-You will leave this course with something you can confidently say:
-
-> “I built this software.”
+## What This Software Does
+Battleship is a turn-based strategy game played on a 10x10 grid. The player fires shots at the computer's board trying to sink all 5 hidden ships before the computer sinks theirs. After every shot, the game displays a stats tracker showing ships remaining, total hits, and all coordinates already tried. The first player to sink all 5 enemy ships wins.
 
 ---
 
-## 🔁 Required Workflow (How You Must Work)
-
-### ✅ Daily GitHub Commits (Required)
-You are expected to:
-- Make **at least one meaningful commit every class day**
-- Write **descriptive commit messages** that explain:
-  - What you changed
-  - Why you changed it
-  - What goal it supports
-
-✅ Good commit messages:
-- `Sprint 1: Created Player class and tested constructor`
-- `Sprint 2: Implemented 2D map and verified movement logic`
-
-🚫 Poor commit messages:
-- `updates`
-- `stuff`
-- `final version`
-
-Your commit history is **evidence of your thinking and progress**.
+## Who It's For
+This game is for anyone who wants to play a classic Battleship game in the terminal. It solves the problem of needing a quick, simple game that runs anywhere Java is installed with no extra setup required.
 
 ---
 
-## 🔁 Agile Development & Sprints
+## How to Run the Program
 
-You will complete **4 sprints**.  
-Each sprint includes:
-- Planning
-- Building
-- Testing
-- Feedback and reflection
-
-Each sprint ends with:
-- A sprint grade
-- A sprint reflection
-- Feedback exchanged with peers
-
-🚫 You may NOT complete multiple sprints at once.  
-✅ Each sprint grade is **final**.
-
----
-
-## 🧪 Testing Expectations
-
-Testing is required every sprint.
-
-✅ Testing may include:
-- Running the program with different inputs
-- Print‑based testing
-- Driver program testing
-- Verifying logic and edge cases
-
-You should be able to explain:
-- What you tested
-- How you tested it
-- What you discovered or fixed
+1. Open the terminal
+2. Navigate to the src folder:
+```
+cd src
+```
+3. Compile all Java files:
+```
+javac *.java
+```
+4. Run the program:
+```
+java BattleshipDriver
+```
+5. When prompted, enter your shot as two numbers separated by a space (row then column, each 0-9):
+```
+Player, enter shot as 'row col' (0-9): 3 5
+```
 
 ---
 
-## 🗂️ Required Project Components
+## Technical Overview
 
-Your final project must include:
+### Main Classes
+| Class | Description |
+|---|---|
+| `Ship` | Represents a single ship with a name, size, occupied cells, and hit tracking |
+| `Board` | The 10x10 game board — handles ship placement, shot resolution, and rendering |
+| `Player` | A human-controlled player that owns a Board and validates user input |
+| `ComputerPlayer` | Extends Player and overrides takeTurn to fire random shots automatically |
+| `Game` | Controls the full game loop — setup, alternating turns, and win condition |
+| `BattleshipDriver` | Driver class with main — creates a Game and starts it |
 
-- ✅ Multiple interacting Java classes
-- ✅ Encapsulation (`private` fields, appropriate getters/setters)
-- ✅ Arrays and/or ArrayLists
-- ✅ A purposeful **2D array**
-- ✅ A working driver program (`main`)
-- ✅ A class diagram matching your final code
-- ✅ Clear documentation
-- ✅ A program that runs and works
+### Key Data Structures
+- `char[][] grid` — a 10x10 2D array in Board that stores the state of every cell (`~` water, `S` ship, `X` hit, `O` miss)
+- `ArrayList<Ship> fleet` — stores all ships on a board
+- `ArrayList<int[]> coordinates` — stores every cell a ship occupies
+- `ArrayList<int[]> hits` — tracks which cells of a ship have been hit
+- `ArrayList<String> shotHistory` — tracks every coordinate the player has fired at
 
-Inheritance and interfaces are optional but encouraged.
-
----
-
-## 🤖 Using AI (Allowed, With Responsibility)
-
-You may use AI to:
-- Organize ideas
-- Plan sprints
-- Debug code
-- Suggest design improvements
-
-You must:
-- Document how you used AI
-- Review and evaluate AI suggestions
-- Understand and explain your final code
-
-AI should act like:
-> A junior developer you supervise — not something that builds the project for you.
+### Program Logic
+1. Both fleets are placed randomly on their boards at game start
+2. The player enters a row and column coordinate to fire a shot
+3. The board checks the cell and returns hit, miss, sunk, or repeat
+4. Stats are displayed showing ships remaining, total hits, and shot history
+5. The computer fires at a random unused cell on the player's board
+6. The game loop repeats until all ships on one side are sunk
 
 ---
 
-## 📘 Project Journal
-
-All planning, work logs, testing notes, and reflections live in **your project journal**.
-
-If it happened during this project, it should be documented there.
+## Class Diagram
+See `CLASS_DIAGRAM.txt` in the project folder, or import `battleship_class_diagram_drawio.xml` into draw.io at https://app.diagrams.net for the full visual diagram.
 
 ---
 
-## ✅ Final Submission Expectations
+## Known Limitations / Future Improvements
 
-By the end of the project:
-- Your program should run reliably
-- Your technical requirements should be met
-- Your code should be readable and organized
-- Your repository should look **professional**
+**What works well:**
+- Full game loop with win and lose conditions
+- Stats tracker showing ships remaining, hits, and shot history after every turn
+- Input validation handles bad input without crashing
+- Enemy ships are hidden from the player during gameplay
 
----
+**What I would improve with more time:**
+- Make the computer smarter — after a hit, target adjacent cells instead of shooting randomly
+- Add a two-player mode where two humans play against each other
+- Add color to the terminal output to make hits, misses, and ships easier to see
+- Allow the player to manually place their own ships instead of random placement
 
-# ✨ Final Step: README Update (Very Important)
 
-When your project is complete, you must **rewrite this README**  
-so it reflects **your software**, not the assignment.
 
-Your final README should include:
-
----
-
-## 🔹 Project Title
-
-## 🔹 What This Software Does
-Explain your project in plain language.
-
-## 🔹 Who It’s For
-Describe the user and the problem being solved.
-
-## 🔹 How to Run the Program
-Clear steps so someone else can run your project.
-
-## 🔹 Technical Overview
-Brief description of:
-- Main classes
-- Key data structures
-- Program logic
-
-## 🔹 Class Diagram
-Include or link your final class diagram.
-
-## 🔹 Known Limitations / Future Improvements
-What works well, and what you would improve with more time.
-
----
-
-## 🎯 Final Reminder
-
-This repository represents **you as a developer**.
-
-Take pride in:
-- Your process
-- Your commits
-- Your code
-- Your documentation
-
-Build something real.  
-Build it thoughtfully.  
-Build it well.
+Class Diagram: https://drive.google.com/file/d/1XQKnIc6_-kwM39VQLdhixuICdG3qDC3M/view?usp=sharing
