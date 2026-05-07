@@ -61,7 +61,7 @@ public class Board {
         }
     }
 
-    /** Returns "hit", "miss", "repeat", or "sunk <shipName>". */
+    /** Returns "hit", "miss", "repeat", or "sunk shipName". */
     public String receiveShot(int row, int col) {
         char cell = grid[row][col];
         if (cell == HIT || cell == MISS) return "repeat";
@@ -90,9 +90,8 @@ public class Board {
     /** Count how many ships are still afloat. */
     public int shipsRemaining() {
         int count = 0;
-        for (Ship s : fleet) {
+        for (Ship s : fleet)
             if (!s.isSunk()) count++;
-        }
         return count;
     }
 
@@ -105,15 +104,23 @@ public class Board {
         return count;
     }
 
-    public String render() {
+    /**
+     * Render the board to a string.
+     * If hideShips is true, unhit ship cells show as water —
+     * used when displaying the enemy board so ships stay hidden.
+     */
+    public String render(boolean hideShips) {
         StringBuilder sb = new StringBuilder();
         sb.append("   ");
         for (int c = 0; c < SIZE; c++) sb.append(c).append(" ");
         sb.append("\n");
         for (int r = 0; r < SIZE; r++) {
             sb.append(r).append("  ");
-            for (int c = 0; c < SIZE; c++)
-                sb.append(grid[r][c]).append(" ");
+            for (int c = 0; c < SIZE; c++) {
+                char ch = grid[r][c];
+                if (hideShips && ch == SHIP) ch = WATER;
+                sb.append(ch).append(" ");
+            }
             sb.append("\n");
         }
         return sb.toString();
