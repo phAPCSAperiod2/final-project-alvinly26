@@ -2,16 +2,18 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Sprint 2: a Player has a name and a Board, and can be prompted
- * for a shot coordinate from the console.
+ * A Player owns a Board and can take turns firing shots.
+ * Tracks shot history so the player can see coordinates already tried.
  */
 public class Player {
     private String name;
     private Board board;
+    private ArrayList<String> shotHistory;  // tracks coords already tried
 
     public Player(String name) {
         this.name = name;
         this.board = new Board();
+        this.shotHistory = new ArrayList<>();
     }
 
     public ArrayList<Ship> buildFleet() {
@@ -45,6 +47,7 @@ public class Player {
                     System.out.println("You already shot there. Try again.");
                     continue;
                 }
+                shotHistory.add(r + "," + c);
                 return new int[]{r, c};
             } catch (NumberFormatException e) {
                 System.out.println("Not a valid number. Try again.");
@@ -52,7 +55,22 @@ public class Player {
         }
     }
 
+    /** Print a stats summary for this player's shots against the opponent. */
+    public void printStats(Board opponentBoard) {
+        System.out.println("--- Your Stats ---");
+        System.out.println("Ships remaining: " + opponentBoard.shipsRemaining());
+        System.out.println("Total hits: " + opponentBoard.totalHits());
+        System.out.print("Shots tried: ");
+        if (shotHistory.isEmpty()) {
+            System.out.println("none");
+        } else {
+            System.out.println(String.join("  ", shotHistory));
+        }
+        System.out.println("------------------");
+    }
+
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public Board getBoard() { return board; }
+    public ArrayList<String> getShotHistory() { return shotHistory; }
 }
